@@ -3,7 +3,7 @@
 Due to the security added by instagram, The original [jquery.isntagramFeed](https://github.com/jsanahuja/jquery.instagramFeed) won't display the images. This is due to the 
 CORS security header added to the images. The image link is still accessible directly via URL but browser throws CORS error when you add this image link directly to your web page.
 
-You have two solution to resolve this issue:
+You have two solutions to resolve this issue:
 - **Add a personal token from your client** - Well, this will work if you have 1 or 2 sites.
 - **Use a proxy image** - This is what we are trying to solve in this repository. Please continue below:
 
