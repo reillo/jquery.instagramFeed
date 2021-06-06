@@ -22,6 +22,10 @@ centralise proxy or per site.
 
 ### Step 2
 
+- change your `jquery.instagramFeed.js` <script> src to `jquery.instagramFeed.p.js` or `jquery.instagramFeed.p.min.js`.
+
+### Step 3
+
 add the proxy image url to your existing instagram feed.
 
 ```
