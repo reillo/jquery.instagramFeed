@@ -691,11 +691,12 @@
         </a>
     </footer>
 
-    <script src="jquery.instagramFeed.min.js"></script>
+    <script src="jquery.instagramFeed.p.min.js?1"></script>
     <script>
         (function($){
             $(window).on('load', function(){
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'username': 'instagram',
                     'container': "#instagram-feed1",
                     'display_profile': true,
@@ -713,6 +714,7 @@
                 }); 
                 
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'username': 'github',
                     'container': "#instagram-feed2",
                     'display_profile': false,
@@ -726,6 +728,7 @@
                     'margin': 1
                 });
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'username': 'zara',
                     'container': "#instagram-feed3",
                     'display_profile': false,
@@ -739,6 +742,7 @@
                     'margin': 0.25
                 });
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'tag': 'paradise',
                     'container': "#instagram-feed4",
                     'display_profile': true,
@@ -749,6 +753,7 @@
                     'margin': 0.5
                 });
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'username': 'fcbarcelona',
                     'container': "#instagram-feed5",
                     'display_profile': false,
@@ -763,6 +768,7 @@
                     'margin': 1
                 });
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'user_id': '20311520',
                     'container': "#instagram-feed6",
                     'display_gallery': true,
@@ -775,6 +781,7 @@
                 
                 //example 7
                 $.instagramFeed({
+                    'proxy_image_url': "/instamedia/instamedia.php",
                     'username': 'instagram',
                     'callback': function(data){
                         $('#jsonHere').html(JSON.stringify(data, null, 2));

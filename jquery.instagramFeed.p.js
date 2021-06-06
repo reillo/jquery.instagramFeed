@@ -9,6 +9,7 @@
 (function ($) {
     var defaults = {
         'host': "https://www.instagram.com/",
+        'proxy_image_url': "/instamedia/instamedia.php",
         'username': '',
         'tag': '',
         'user_id': '',
@@ -27,7 +28,9 @@
         'margin': 0.5,
         'image_size': 640,
         'lazy_load': false,
-        'cache_time': 360,
+        // We need to make a small cache time
+        // so the url we passed are not expired
+        'cache_time': 60,
         'on_error': console.error
     };
     var image_sizes = {
@@ -157,11 +160,19 @@
         }).fail(function (e) {
             if(tries > 1){
                 console.warn("Instagram Feed: Request failed, " + (tries-1) + " tries left. Retrying...");
+                console.warn(type);
                 request_data(url, type, tries-1, callback, autoFallback, !googlePrefix);
             }else{
                 callback(false, e);
             }
         });
+    }
+
+    /**
+     * create proxy url
+     */
+    function create_url(options, image) {
+        return options.proxy_image_url+'?media-url='+encodeURIComponent(image);
     }
 
     /**
@@ -264,8 +275,11 @@
          * Profile & Biography
          */
         if(options.display_profile && options.type !== "userid"){
+
+            var profile_pic_url = create_url(options, data.profile_pic_url);
+
             html += '<div class="instagram_profile"' + styles.profile_container + '>';
-            html += '<img class="instagram_profile_image" src="' + data.profile_pic_url  + '" alt="'+ (options.type == "tag" ? data.name + ' tag pic' : data.username + ' profile pic') + '"' + styles.profile_image + (options.lazy_load ? ' loading="lazy"' : '') + ' />';
+            html += '<img class="instagram_profile_image" src="' + profile_pic_url  + '" alt="'+ (options.type == "tag" ? data.name + ' tag pic' : data.username + ' profile pic') + '"' + styles.profile_image + (options.lazy_load ? ' loading="lazy"' : '') + ' />';
             if(options.type == "tag"){
                 html += '<p class="instagram_tag"' + styles.profile_name + '><a href="https://www.instagram.com/explore/tags/' + options.tag + '/" rel="noopener" target="_blank">#' + options.tag + '</a></p>';
             }else if(options.type == "username"){
@@ -315,6 +329,8 @@
                             image = imgs[i].node.thumbnail_resources[image_index].src;
                     }
 
+                    image = create_url(options, image);
+
                     html += '<a href="' + url + '"' + (options.display_captions ? ' data-caption="' + caption + '"' : '') + ' class="instagram-' + type_resource + '" rel="noopener" target="_blank"' + styles.gallery_image_link + '>';
                     html += '<img' + (options.lazy_load ? ' loading="lazy"' : '') + ' src="' + image + '" alt="' + caption + '"' + styles.gallery_image + ' />';
                     html += '</a>';
@@ -354,11 +370,6 @@
 
     $.instagramFeed = function (opts) {
         var options = $.fn.extend({}, defaults, opts);
-
-        if (options.username == "" && options.tag == "" && options.user_id == "" && options.location == "") {
-            options.on_error("Instagram Feed: Error, no username, tag or user_id defined.", 1);
-            return false;
-        }
 
         if(typeof opts.display_profile !== "undefined" && opts.display_profile && options.user_id != ""){
             console.warn("Instagram Feed: 'display_profile' is not available using 'user_id' (GraphQL API)");
